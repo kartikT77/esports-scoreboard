@@ -3,346 +3,1364 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Esports Tournament Manager</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
 
+:root {
+    --bg: #080b12;
+    --panel: #111827;
+    --panel2: #172033;
+    --border: #273449;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --primary: #6366f1;
+    --primary2: #4f46e5;
+    --success: #22c55e;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+}
+
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #080b12;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.app {
+    min-height: 100vh;
+}
+
+/* HEADER */
+
+.header {
+    background: linear-gradient(135deg, #111827, #151b2d);
+    border-bottom: 1px solid var(--border);
+    padding: 22px;
+}
+
+.header-inner {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.subtitle {
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* NAV */
+
+.nav {
+    max-width: 1200px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+}
+
+.nav button {
+    background: var(--panel);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 10px 16px;
+    border-radius: 8px;
+    white-space: nowrap;
+}
+
+.nav button.active {
+    background: var(--primary);
     color: white;
+    border-color: var(--primary);
 }
 
-header {
-    background: #111827;
-    padding: 20px;
-    text-align: center;
-    border-bottom: 1px solid #263044;
-}
-
-header h1 {
-    margin: 0;
-}
+/* CONTENT */
 
 .container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: auto;
-    padding: 20px;
+    padding: 25px 20px 60px;
 }
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* CARDS */
 
 .card {
-    background: #111827;
-    border: 1px solid #263044;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 18px;
 }
 
-h2 {
+.card h2 {
+    margin: 0 0 18px;
+    font-size: 19px;
+}
+
+.card h3 {
     margin-top: 0;
+}
+
+/* GRID */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+/* FORM */
+
+label {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 6px;
 }
 
 input,
 select {
     width: 100%;
-    padding: 12px;
-    margin-top: 6px;
-    margin-bottom: 15px;
     background: #0b1220;
     color: white;
-    border: 1px solid #334155;
-    border-radius: 7px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    outline: none;
 }
 
-button {
-    background: #2563eb;
-    color: white;
+input:focus,
+select:focus {
+    border-color: var(--primary);
+}
+
+/* BUTTONS */
+
+.btn {
     border: none;
-    padding: 12px 18px;
-    border-radius: 7px;
-    cursor: pointer;
-    font-weight: bold;
+    border-radius: 8px;
+    padding: 11px 17px;
+    color: white;
+    font-weight: 700;
 }
 
-button:hover {
-    opacity: 0.9;
+.btn-primary {
+    background: var(--primary);
 }
 
-.hidden {
-    display: none;
+.btn-primary:hover {
+    background: var(--primary2);
 }
 
-.rules {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
+.btn-success {
+    background: var(--success);
 }
 
-.team-row {
-    display: grid;
-    grid-template-columns: 1fr 120px;
-    gap: 10px;
-    margin-bottom: 10px;
+.btn-danger {
+    background: var(--danger);
 }
+
+.btn-secondary {
+    background: #263247;
+}
+
+.btn-small {
+    padding: 7px 10px;
+    font-size: 12px;
+}
+
+/* TEAM LIST */
 
 .team-list {
     margin-top: 15px;
 }
 
-.team {
-    background: #0b1220;
+.team-item {
+    display: grid;
+    grid-template-columns: 55px 1fr 100px 45px;
+    align-items: center;
+    gap: 10px;
     padding: 12px;
-    border-radius: 7px;
+    background: #0b1220;
+    border: 1px solid var(--border);
+    border-radius: 9px;
     margin-bottom: 8px;
 }
 
-@media(max-width:600px) {
+.slot {
+    color: var(--warning);
+    font-weight: bold;
+}
 
-    .rules {
+.remove {
+    background: transparent;
+    border: none;
+    color: var(--danger);
+    font-size: 20px;
+}
+
+/* TABLE */
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+th {
+    background: #1b2638;
+    color: #cbd5e1;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+}
+
+td {
+    color: #e2e8f0;
+}
+
+.rank-1 {
+    color: #facc15;
+    font-weight: bold;
+}
+
+.rank-2 {
+    color: #cbd5e1;
+    font-weight: bold;
+}
+
+.rank-3 {
+    color: #d97706;
+    font-weight: bold;
+}
+
+/* STATS */
+
+.stat {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.stat-title {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.stat-value {
+    font-size: 26px;
+    font-weight: 800;
+    margin-top: 6px;
+}
+
+/* PLACEMENT */
+
+.placement-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.placement-box {
+    background: #0b1220;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.placement-box span {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+/* ALERT */
+
+.alert {
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: none;
+}
+
+.alert.show {
+    display: block;
+}
+
+.alert-error {
+    background: rgba(239,68,68,.12);
+    color: #fca5a5;
+    border: 1px solid rgba(239,68,68,.3);
+}
+
+.alert-success {
+    background: rgba(34,197,94,.12);
+    color: #86efac;
+    border: 1px solid rgba(34,197,94,.3);
+}
+
+/* EMPTY */
+
+.empty {
+    text-align: center;
+    padding: 35px;
+    color: var(--muted);
+}
+
+/* ACTION BAR */
+
+.actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+/* BADGE */
+
+.badge {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    background: #263247;
+    color: #cbd5e1;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 700px) {
+
+    .grid,
+    .grid-3 {
         grid-template-columns: 1fr;
     }
 
-    .team-row {
-        grid-template-columns: 1fr;
+    .placement-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .team-item {
+        grid-template-columns: 45px 1fr 70px 35px;
+    }
+
+    .container {
+        padding: 18px 12px 40px;
+    }
+
+    .card {
+        padding: 16px;
     }
 
 }
-
 </style>
 </head>
 
 <body>
 
-<header>
+<div class="app">
 
-<h1>🏆 Esports Tournament Manager</h1>
-
+<header class="header">
+    <div class="header-inner">
+        <div class="logo">🏆 Esports Tournament Manager</div>
+        <div class="subtitle">
+            Tournament setup • scoring • matches • live standings
+        </div>
+    </div>
 </header>
 
+<nav class="nav">
 
-<div class="container">
+    <button class="nav-btn active" onclick="showPage('setup', this)">
+        Setup
+    </button>
 
+    <button class="nav-btn" onclick="showPage('teams', this)">
+        Teams
+    </button>
 
-<!-- TOURNAMENT SETUP -->
+    <button class="nav-btn" onclick="showPage('matches', this)">
+        Matches
+    </button>
 
-<div class="card">
+    <button class="nav-btn" onclick="showPage('standings', this)">
+        Standings
+    </button>
 
-<h2>1. Tournament Setup</h2>
+    <button class="nav-btn" onclick="showPage('settings', this)">
+        Settings
+    </button>
 
-<label>Tournament Name</label>
-
-<input
-    id="tournamentName"
-    placeholder="Example: Karnataka Pro League"
->
-
-
-<label>Game</label>
-
-<select id="game">
-
-<option>Free Fire</option>
-<option>BGMI</option>
-<option>PUBG Mobile</option>
-<option>COD Mobile</option>
-
-</select>
+</nav>
 
 
-<label>Number of Matches</label>
+<main class="container">
 
-<input
-    id="matchCount"
-    type="number"
-    value="6"
-    min="1"
->
+<!-- ================= SETUP ================= -->
 
+<section id="setup" class="page active">
 
-</div>
+    <div id="setupAlert" class="alert"></div>
 
+    <div class="card">
 
-<!-- SCORING -->
+        <h2>🎮 Tournament Setup</h2>
 
-<div class="card">
+        <div class="grid">
 
-<h2>2. Scoring Rules</h2>
+            <div>
+                <label>Tournament Name</label>
+                <input
+                    id="tournamentName"
+                    placeholder="Example: Karnataka Pro League"
+                >
+            </div>
 
-<div class="rules">
+            <div>
+                <label>Game</label>
 
-<div>
+                <select id="game">
 
-<label>Points per Kill</label>
+                    <option value="Free Fire">
+                        Free Fire
+                    </option>
 
-<input
-    id="killPoints"
-    type="number"
-    value="1"
-    min="0"
->
+                    <option value="BGMI">
+                        BGMI
+                    </option>
 
-</div>
+                    <option value="PUBG Mobile">
+                        PUBG Mobile
+                    </option>
 
+                    <option value="COD Mobile">
+                        COD Mobile
+                    </option>
 
-<div>
+                </select>
 
-<label>1st Place Points</label>
+            </div>
 
-<input
-    id="firstPlace"
-    type="number"
-    value="10"
-    min="0"
->
+            <div>
+                <label>Tournament Format</label>
 
-</div>
+                <select id="format">
 
-</div>
+                    <option value="Battle Royale">
+                        Battle Royale
+                    </option>
 
-<p>
-More placement rules will be added next.
-</p>
+                    <option value="Qualifier">
+                        Qualifier
+                    </option>
 
-</div>
+                    <option value="League">
+                        League
+                    </option>
 
+                    <option value="Grand Final">
+                        Grand Final
+                    </option>
 
-<!-- TEAMS -->
+                </select>
 
-<div class="card">
+            </div>
 
-<h2>3. Add Teams</h2>
+            <div>
+                <label>Number of Matches</label>
 
-<div class="team-row">
+                <input
+                    id="matchCount"
+                    type="number"
+                    min="1"
+                    value="6"
+                >
 
-<input
-    id="teamName"
-    placeholder="Team name"
->
+            </div>
 
-<input
-    id="teamSlot"
-    type="number"
-    placeholder="Slot"
->
+        </div>
 
-</div>
-
-<button onclick="addTeam()">
-+ Add Team
-</button>
-
-<div id="teamList" class="team-list"></div>
-
-</div>
-
-
-<!-- CREATE -->
-
-<div class="card">
-
-<button onclick="createTournament()">
-Create Tournament
-</button>
-
-</div>
+    </div>
 
 
-<!-- TOURNAMENT RESULT -->
+    <!-- SCORING -->
 
-<div id="tournamentCreated" class="card hidden">
+    <div class="card">
 
-<h2>✅ Tournament Created</h2>
+        <h2>📊 Scoring System</h2>
 
-<p id="summary"></p>
+        <div class="grid">
 
-<button onclick="startMatch()">
-Enter Match Results
-</button>
+            <div>
 
-</div>
+                <label>Points per Kill</label>
 
+                <input
+                    id="killPoints"
+                    type="number"
+                    min="0"
+                    step="0.5"
+                    value="1"
+                >
+
+            </div>
+
+            <div>
+
+                <label>Maximum Placement</label>
+
+                <input
+                    id="maxPlacement"
+                    type="number"
+                    min="1"
+                    value="12"
+                >
+
+            </div>
+
+        </div>
+
+        <h3>Placement Points</h3>
+
+        <div id="placementInputs" class="placement-grid"></div>
+
+        <div class="actions">
+
+            <button
+                class="btn btn-secondary"
+                onclick="loadDefaultScoring()"
+            >
+                Load Default
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- CREATE -->
+
+    <div class="card">
+
+        <h2>🚀 Create Tournament</h2>
+
+        <p style="color:#94a3b8;">
+            Set your tournament rules and add your teams before creating
+            the first match.
+        </p>
+
+        <div class="actions">
+
+            <button
+                class="btn btn-primary"
+                onclick="createTournament()"
+            >
+                Create Tournament
+            </button>
+
+            <button
+                class="btn btn-danger"
+                onclick="resetTournament()"
+            >
+                Reset
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUMMARY -->
+
+    <div id="summaryCard" class="card" style="display:none;">
+
+        <h2>✅ Tournament Ready</h2>
+
+        <div id="summary"></div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= TEAMS ================= -->
+
+<section id="teams" class="page">
+
+    <div id="teamAlert" class="alert"></div>
+
+    <div class="card">
+
+        <h2>👥 Team Management</h2>
+
+        <div class="grid">
+
+            <div>
+
+                <label>Team Name</label>
+
+                <input
+                    id="newTeamName"
+                    placeholder="Example: GRV Esports"
+                >
+
+            </div>
+
+            <div>
+
+                <label>Slot Number</label>
+
+                <input
+                    id="newTeamSlot"
+                    type="number"
+                    min="1"
+                    placeholder="1"
+                >
+
+            </div>
+
+        </div>
+
+        <div class="actions">
+
+            <button
+                class="btn btn-primary"
+                onclick="addTeam()"
+            >
+                + Add Team
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Teams <span id="teamCount" class="badge">0</span></h2>
+
+        <div id="teamList"></div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= MATCHES ================= -->
+
+<section id="matches" class="page">
+
+    <div id="matchAlert" class="alert"></div>
+
+    <div class="card">
+
+        <h2>🎮 Match Result Entry</h2>
+
+        <div class="grid">
+
+            <div>
+
+                <label>Match Number</label>
+
+                <select id="matchNumber"></select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Enter Results</h2>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Slot</th>
+                        <th>Team</th>
+                        <th>Placement</th>
+                        <th>Kills</th>
+                        <th>Placement Pts</th>
+                        <th>Kill Pts</th>
+                        <th>Total</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="matchTableBody"></tbody>
+
+            </table>
+
+        </div>
+
+        <div class="actions">
+
+            <button
+                class="btn btn-primary"
+                onclick="calculateMatch()"
+            >
+                Calculate Match
+            </button>
+
+            <button
+                class="btn btn-success"
+                onclick="saveMatch()"
+            >
+                Save Match
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= STANDINGS ================= -->
+
+<section id="standings" class="page">
+
+    <div class="grid-3">
+
+        <div class="stat">
+
+            <div class="stat-title">
+                Teams
+            </div>
+
+            <div
+                class="stat-value"
+                id="statTeams"
+            >
+                0
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div class="stat-title">
+                Matches Played
+            </div>
+
+            <div
+                class="stat-value"
+                id="statMatches"
+            >
+                0
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div class="stat-title">
+                Total Kills
+            </div>
+
+            <div
+                class="stat-value"
+                id="statKills"
+            >
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>🏆 Overall Standings</h2>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Rank</th>
+                        <th>Team</th>
+                        <th>Matches</th>
+                        <th>Kills</th>
+                        <th>Placement Pts</th>
+                        <th>Kill Pts</th>
+                        <th>Total</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="standingsBody"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= SETTINGS ================= -->
+
+<section id="settings" class="page">
+
+    <div class="card">
+
+        <h2>⚙️ Tournament Settings</h2>
+
+        <p style="color:#94a3b8;">
+            Tournament data is currently stored locally in this browser.
+        </p>
+
+        <div class="actions">
+
+            <button
+                class="btn btn-secondary"
+                onclick="exportData()"
+            >
+                Export Tournament Data
+            </button>
+
+            <button
+                class="btn btn-danger"
+                onclick="resetTournament()"
+            >
+                Delete Tournament
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
 
 </div>
 
 
 <script>
 
-let teams = [];
+/* =========================================================
+   DATA
+========================================================= */
 
-let tournament = {};
+let tournament = {
+
+    name: "",
+    game: "Free Fire",
+    format: "Battle Royale",
+    matchCount: 6,
+    killPoints: 1,
+
+    placementPoints: {},
+
+    teams: [],
+
+    matches: []
+
+};
 
 
-/* ADD TEAM */
+/* =========================================================
+   DEFAULT SCORING
+========================================================= */
 
-function addTeam() {
+function getDefaultPlacementPoints() {
+
+    return {
+
+        1: 10,
+        2: 6,
+        3: 5,
+        4: 4,
+        5: 3,
+        6: 2,
+        7: 1,
+        8: 0,
+        9: 0,
+        10: 0,
+        11: 0,
+        12: 0
+
+    };
+
+}
+
+
+/* =========================================================
+   PLACEMENT INPUTS
+========================================================= */
+
+function renderPlacementInputs() {
+
+    const max =
+        Number(
+            document.getElementById("maxPlacement").value
+        );
+
+    const container =
+        document.getElementById("placementInputs");
+
+    const current =
+        tournament.placementPoints || getDefaultPlacementPoints();
+
+    container.innerHTML = "";
+
+    for (let i = 1; i <= max; i++) {
+
+        const value =
+            current[i] !== undefined
+                ? current[i]
+                : 0;
+
+        container.innerHTML += `
+
+            <div class="placement-box">
+
+                <span>${i}${getOrdinal(i)} Place</span>
+
+                <input
+                    type="number"
+                    min="0"
+                    step="0.5"
+                    id="place-${i}"
+                    value="${value}"
+                >
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   ORDINAL
+========================================================= */
+
+function getOrdinal(number) {
+
+    if (number % 100 >= 11 &&
+        number % 100 <= 13) {
+
+        return "th";
+
+    }
+
+    switch (number % 10) {
+
+        case 1:
+            return "st";
+
+        case 2:
+            return "nd";
+
+        case 3:
+            return "rd";
+
+        default:
+            return "th";
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD DEFAULT SCORING
+========================================================= */
+
+function loadDefaultScoring() {
+
+    const defaults =
+        getDefaultPlacementPoints();
+
+    document.getElementById(
+        "killPoints"
+    ).value = 1;
+
+    document.getElementById(
+        "maxPlacement"
+    ).value = 12;
+
+    renderPlacementInputs();
+
+    Object.keys(defaults).forEach(position => {
+
+        const input =
+            document.getElementById(
+                `place-${position}`
+            );
+
+        if (input) {
+
+            input.value =
+                defaults[position];
+
+        }
+
+    });
+
+}
+
+
+/* =========================================================
+   CREATE TOURNAMENT
+========================================================= */
+
+function createTournament() {
 
     const name =
-        document.getElementById("teamName").value.trim();
+        document
+        .getElementById("tournamentName")
+        .value
+        .trim();
 
-    const slot =
-        document.getElementById("teamSlot").value;
+    const game =
+        document.getElementById("game").value;
+
+    const format =
+        document.getElementById("format").value;
+
+    const matchCount =
+        Number(
+            document.getElementById("matchCount").value
+        );
+
+    const killPoints =
+        Number(
+            document.getElementById("killPoints").value
+        );
+
+    const maxPlacement =
+        Number(
+            document.getElementById("maxPlacement").value
+        );
 
 
     if (!name) {
 
-        alert("Enter a team name.");
+        showAlert(
+            "setupAlert",
+            "Enter a tournament name.",
+            "error"
+        );
 
         return;
 
     }
 
 
-    teams.push({
+    if (matchCount < 1) {
 
-        name: name,
+        showAlert(
+            "setupAlert",
+            "Number of matches must be at least 1.",
+            "error"
+        );
 
-        slot: slot || teams.length + 1,
+        return;
 
-        matches: [],
-
-        totalPoints: 0,
-
-        totalKills: 0
-
-    });
+    }
 
 
-    document.getElementById("teamName").value = "";
+    if (tournament.teams.length === 0) {
 
-    document.getElementById("teamSlot").value = "";
+        showAlert(
+            "setupAlert",
+            "Add at least one team before creating the tournament.",
+            "error"
+        );
+
+        return;
+
+    }
 
 
-    displayTeams();
+    const placementPoints = {};
+
+
+    for (
+        let i = 1;
+        i <= maxPlacement;
+        i++
+    ) {
+
+        const input =
+            document.getElementById(
+                `place-${i}`
+            );
+
+        placementPoints[i] =
+            Number(input.value) || 0;
+
+    }
+
+
+    tournament.name = name;
+    tournament.game = game;
+    tournament.format = format;
+    tournament.matchCount = matchCount;
+    tournament.killPoints = killPoints;
+    tournament.placementPoints = placementPoints;
+
+
+    saveData();
+
+    updateSummary();
+    updateMatchSelector();
+    updateStandings();
+    updateStats();
+
+
+    document.getElementById(
+        "summaryCard"
+    ).style.display = "block";
+
+
+    showAlert(
+        "setupAlert",
+        "Tournament created successfully.",
+        "success"
+    );
 
 }
 
 
-/* DISPLAY TEAMS */
+/* =========================================================
+   ADD TEAM
+========================================================= */
 
-function displayTeams() {
+function addTeam() {
 
-    const list =
+    const name =
+        document
+        .getElementById("newTeamName")
+        .value
+        .trim();
+
+    let slot =
+        Number(
+            document.getElementById("newTeamSlot").value
+        );
+
+
+    if (!name) {
+
+        showAlert(
+            "teamAlert",
+            "Enter a team name.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (!slot) {
+
+        slot =
+            tournament.teams.length + 1;
+
+    }
+
+
+    const duplicate =
+        tournament.teams.some(
+            team => team.slot === slot
+        );
+
+
+    if (duplicate) {
+
+        showAlert(
+            "teamAlert",
+            "That slot number is already being used.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    tournament.teams.push({
+
+        id: Date.now(),
+
+        name: name,
+
+        slot: slot,
+
+        totalPoints: 0,
+
+        totalKills: 0,
+
+        placementPoints: 0,
+
+        killPoints: 0,
+
+        matchesPlayed: 0,
+
+        results: []
+
+    });
+
+
+    tournament.teams.sort(
+        (a, b) => a.slot - b.slot
+    );
+
+
+    document.getElementById(
+        "newTeamName"
+    ).value = "";
+
+    document.getElementById(
+        "newTeamSlot"
+    ).value = "";
+
+
+    saveData();
+
+    renderTeams();
+
+    updateStats();
+
+    showAlert(
+        "teamAlert",
+        `${name} added successfully.`,
+        "success"
+    );
+
+}
+
+
+/* =========================================================
+   RENDER TEAMS
+========================================================= */
+
+function renderTeams() {
+
+    const container =
         document.getElementById("teamList");
 
+    document.getElementById(
+        "teamCount"
+    ).textContent =
+        tournament.teams.length;
 
-    list.innerHTML = "";
+
+    if (
+        tournament.teams.length === 0
+    ) {
+
+        container.innerHTML = `
+            <div class="empty">
+                No teams added yet.
+            </div>
+        `;
+
+        return;
+
+    }
 
 
-    teams.forEach((team, index) => {
+    container.innerHTML = "";
 
-        list.innerHTML += `
 
-            <div class="team">
+    tournament.teams.forEach(team => {
 
-                <b>${team.slot}.</b>
+        container.innerHTML += `
 
-                ${team.name}
+            <div class="team-item">
+
+                <div class="slot">
+                    #${team.slot}
+                </div>
+
+                <div>
+                    <strong>
+                        ${escapeHtml(team.name)}
+                    </strong>
+                </div>
+
+                <div>
+                    <span class="badge">
+                        ${team.totalPoints} pts
+                    </span>
+                </div>
+
+                <button
+                    class="remove"
+                    onclick="removeTeam(${team.id})"
+                    title="Remove team"
+                >
+                    ×
+                </button>
 
             </div>
 
@@ -353,226 +1371,1245 @@ function displayTeams() {
 }
 
 
-/* CREATE TOURNAMENT */
+/* =========================================================
+   REMOVE TEAM
+========================================================= */
 
-function createTournament() {
+function removeTeam(id) {
 
-    const name =
-        document.getElementById("tournamentName").value.trim();
-
-    const game =
-        document.getElementById("game").value;
-
-    const matches =
-        Number(document.getElementById("matchCount").value);
-
-    const killPoints =
-        Number(document.getElementById("killPoints").value);
-
-    const firstPlace =
-        Number(document.getElementById("firstPlace").value);
+    const team =
+        tournament.teams.find(
+            t => t.id === id
+        );
 
 
-    if (!name) {
-
-        alert("Enter tournament name.");
-
-        return;
-
-    }
+    if (!team) return;
 
 
-    if (teams.length === 0) {
+    if (
+        team.results.length > 0
+    ) {
 
-        alert("Add at least one team.");
+        showAlert(
+            "teamAlert",
+            "This team already has match results and cannot be removed.",
+            "error"
+        );
 
         return;
 
     }
 
 
-    tournament = {
+    if (
+        !confirm(
+            `Remove ${team.name}?`
+        )
+    ) {
 
-        name: name,
+        return;
 
-        game: game,
-
-        matches: matches,
-
-        killPoints: killPoints,
-
-        firstPlace: firstPlace,
-
-        teams: teams
-
-    };
+    }
 
 
-    document.getElementById("summary").innerHTML = `
-
-        <b>${name}</b><br><br>
-
-        Game: ${game}<br>
-
-        Teams: ${teams.length}<br>
-
-        Matches: ${matches}<br>
-
-        Kill points: ${killPoints}<br>
-
-        1st place: ${firstPlace} points
-
-    `;
+    tournament.teams =
+        tournament.teams.filter(
+            t => t.id !== id
+        );
 
 
-    document
-        .getElementById("tournamentCreated")
-        .classList
-        .remove("hidden");
+    saveData();
+
+    renderTeams();
+
+    updateStats();
 
 }
 
 
-/* START MATCH */
+/* =========================================================
+   MATCH SELECTOR
+========================================================= */
 
-function startMatch() {
+function updateMatchSelector() {
 
-    alert(
-        "Next module: Match Result Entry"
+    const select =
+        document.getElementById(
+            "matchNumber"
+        );
+
+    select.innerHTML = "";
+
+
+    for (
+        let i = 1;
+        i <= tournament.matchCount;
+        i++
+    ) {
+
+        const played =
+            tournament.matches.some(
+                match =>
+                    match.number === i
+            );
+
+
+        select.innerHTML += `
+
+            <option value="${i}">
+
+                Match ${i}
+                ${played ? " ✓" : ""}
+
+            </option>
+
+        `;
+
+    }
+
+
+    renderMatchTable();
+
+}
+
+
+/* =========================================================
+   MATCH TABLE
+========================================================= */
+
+function renderMatchTable() {
+
+    const body =
+        document.getElementById(
+            "matchTableBody"
+        );
+
+    if (
+        tournament.teams.length === 0
+    ) {
+
+        body.innerHTML = `
+
+            <tr>
+                <td colspan="7">
+                    Add teams first.
+                </td>
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    body.innerHTML = "";
+
+
+    tournament.teams.forEach(team => {
+
+        const previous =
+            getMatchResult(
+                Number(
+                    document.getElementById(
+                        "matchNumber"
+                    ).value
+                ),
+                team.id
+            );
+
+
+        const placement =
+            previous
+                ? previous.placement
+                : "";
+
+        const kills =
+            previous
+                ? previous.kills
+                : "";
+
+
+        body.innerHTML += `
+
+            <tr>
+
+                <td>
+                    #${team.slot}
+                </td>
+
+                <td>
+                    <strong>
+                        ${escapeHtml(team.name)}
+                    </strong>
+                </td>
+
+                <td>
+
+                    <input
+                        class="placement-input"
+                        data-team="${team.id}"
+                        type="number"
+                        min="1"
+                        value="${placement}"
+                        placeholder="1"
+                    >
+
+                </td>
+
+                <td>
+
+                    <input
+                        class="kills-input"
+                        data-team="${team.id}"
+                        type="number"
+                        min="0"
+                        value="${kills}"
+                        placeholder="0"
+                    >
+
+                </td>
+
+                <td id="placement-points-${team.id}">
+                    -
+                </td>
+
+                <td id="kill-points-${team.id}">
+                    -
+                </td>
+
+                <td id="total-points-${team.id}">
+                    -
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+
+    document
+        .querySelectorAll(
+            ".placement-input, .kills-input"
+        )
+        .forEach(input => {
+
+            input.addEventListener(
+                "input",
+                calculateLiveRow
+            );
+
+        });
+
+
+    calculateAllRows();
+
+}
+
+
+/* =========================================================
+   LIVE ROW CALCULATION
+========================================================= */
+
+function calculateLiveRow(event) {
+
+    const teamId =
+        Number(
+            event.target.dataset.team
+        );
+
+    calculateTeamRow(teamId);
+
+}
+
+
+/* =========================================================
+   CALCULATE TEAM ROW
+========================================================= */
+
+function calculateTeamRow(teamId) {
+
+    const placementInput =
+        document.querySelector(
+            `.placement-input[data-team="${teamId}"]`
+        );
+
+    const killsInput =
+        document.querySelector(
+            `.kills-input[data-team="${teamId}"]`
+        );
+
+
+    if (!placementInput ||
+        !killsInput) {
+
+        return;
+
+    }
+
+
+    const placement =
+        Number(
+            placementInput.value
+        );
+
+    const kills =
+        Number(
+            killsInput.value
+        );
+
+
+    const placementPoints =
+        tournament.placementPoints[
+            placement
+        ] || 0;
+
+
+    const killPoints =
+        kills *
+        tournament.killPoints;
+
+
+    const total =
+        placementPoints +
+        killPoints;
+
+
+    document.getElementById(
+        `placement-points-${teamId}`
+    ).textContent =
+        placement
+            ? placementPoints
+            : "-";
+
+
+    document.getElementById(
+        `kill-points-${teamId}`
+    ).textContent =
+        killsInput.value !== ""
+            ? killPoints
+            : "-";
+
+
+    document.getElementById(
+        `total-points-${teamId}`
+    ).textContent =
+        placement || killsInput.value !== ""
+            ? total
+            : "-";
+
+}
+
+
+/* =========================================================
+   CALCULATE ALL
+========================================================= */
+
+function calculateAllRows() {
+
+    tournament.teams.forEach(
+        team =>
+            calculateTeamRow(team.id)
     );
 
 }
 
-</script>
 
-</body>
-</html>    th {
-      background: #334155;
+/* =========================================================
+   CALCULATE MATCH
+========================================================= */
+
+function calculateMatch() {
+
+    const matchNumber =
+        Number(
+            document.getElementById(
+                "matchNumber"
+            ).value
+        );
+
+
+    const placements = [];
+
+    let valid = true;
+
+
+    tournament.teams.forEach(team => {
+
+        const input =
+            document.querySelector(
+                `.placement-input[data-team="${team.id}"]`
+            );
+
+
+        const placement =
+            Number(input.value);
+
+
+        if (!placement) {
+
+            valid = false;
+
+        }
+
+
+        if (
+            placements.includes(
+                placement
+            )
+        ) {
+
+            valid = false;
+
+        }
+
+
+        placements.push(
+            placement
+        );
+
+    });
+
+
+    if (!valid) {
+
+        showAlert(
+            "matchAlert",
+            "Every team needs a unique placement number.",
+            "error"
+        );
+
+        return;
+
     }
 
-    .total {
-      font-weight: bold;
+
+    showAlert(
+        "matchAlert",
+        `Match ${matchNumber} calculated successfully.`,
+        "success"
+    );
+
+}
+
+
+/* =========================================================
+   SAVE MATCH
+========================================================= */
+
+function saveMatch() {
+
+    const matchNumber =
+        Number(
+            document.getElementById(
+                "matchNumber"
+            ).value
+        );
+
+
+    if (!matchNumber) {
+
+        showAlert(
+            "matchAlert",
+            "Select a match.",
+            "error"
+        );
+
+        return;
+
     }
-  </style>
-</head>
 
-<body>
 
-<div class="container">
+    const results = [];
 
-  <h1>🏆 Esports Scoreboard</h1>
 
-  <div class="card">
+    for (
+        const team of tournament.teams
+    ) {
 
-    <h2>Add Team Result</h2>
+        const placementInput =
+            document.querySelector(
+                `.placement-input[data-team="${team.id}"]`
+            );
 
-    <input id="teamName" placeholder="Team name">
-    <input id="placement" type="number" placeholder="Placement">
-    <input id="kills" type="number" placeholder="Kills">
+        const killsInput =
+            document.querySelector(
+                `.kills-input[data-team="${team.id}"]`
+            );
 
-    <button onclick="addTeam()">Add Result</button>
 
-  </div>
+        const placement =
+            Number(
+                placementInput.value
+            );
 
-  <div class="card">
+        const kills =
+            Number(
+                killsInput.value
+            );
 
-    <h2>Live Standings</h2>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Rank</th>
-          <th>Team</th>
-          <th>Placement</th>
-          <th>Kills</th>
-          <th>Placement Pts</th>
-          <th>Kill Pts</th>
-          <th>Total</th>
-        </tr>
-      </thead>
+        if (!placement) {
 
-      <tbody id="tableBody"></tbody>
-    </table>
+            showAlert(
+                "matchAlert",
+                `Enter placement for ${team.name}.`,
+                "error"
+            );
 
-  </div>
+            return;
 
-</div>
+        }
 
-<script>
 
-let teams = [];
+        if (kills < 0) {
 
-function getPlacementPoints(position) {
+            showAlert(
+                "matchAlert",
+                `Invalid kills for ${team.name}.`,
+                "error"
+            );
 
-  const points = {
-    1: 10,
-    2: 6,
-    3: 5,
-    4: 4,
-    5: 3,
-    6: 2,
-    7: 1
-  };
+            return;
 
-  return points[position] || 0;
+        }
+
+
+        const placementPoints =
+            tournament.placementPoints[
+                placement
+            ] || 0;
+
+
+        const killPoints =
+            kills *
+            tournament.killPoints;
+
+
+        const total =
+            placementPoints +
+            killPoints;
+
+
+        results.push({
+
+            teamId: team.id,
+
+            teamName: team.name,
+
+            slot: team.slot,
+
+            placement: placement,
+
+            kills: kills,
+
+            placementPoints: placementPoints,
+
+            killPoints: killPoints,
+
+            total: total
+
+        });
+
+    }
+
+
+    const existingIndex =
+        tournament.matches.findIndex(
+            match =>
+                match.number === matchNumber
+        );
+
+
+    const match = {
+
+        number: matchNumber,
+
+        savedAt:
+            new Date().toISOString(),
+
+        results: results
+
+    };
+
+
+    if (
+        existingIndex >= 0
+    ) {
+
+        tournament.matches[
+            existingIndex
+        ] = match;
+
+    } else {
+
+        tournament.matches.push(
+            match
+        );
+
+    }
+
+
+    recalculateTournamentTotals();
+
+    saveData();
+
+    updateStandings();
+
+    updateStats();
+
+    updateMatchSelector();
+
+
+    showAlert(
+        "matchAlert",
+        `Match ${matchNumber} saved successfully.`,
+        "success"
+    );
+
 }
 
-function addTeam() {
 
-  const name = document.getElementById("teamName").value;
-  const placement = Number(document.getElementById("placement").value);
-  const kills = Number(document.getElementById("kills").value);
+/* =========================================================
+   RECALCULATE TOTALS
+========================================================= */
 
-  if (!name || !placement || kills < 0) {
-    alert("Enter valid team details");
-    return;
-  }
+function recalculateTournamentTotals() {
 
-  const placementPoints = getPlacementPoints(placement);
-  const killPoints = kills;
-  const total = placementPoints + killPoints;
+    tournament.teams.forEach(team => {
 
-  teams.push({
-    name,
-    placement,
-    kills,
-    placementPoints,
-    killPoints,
-    total
-  });
+        team.totalPoints = 0;
+        team.totalKills = 0;
+        team.placementPoints = 0;
+        team.killPoints = 0;
+        team.matchesPlayed = 0;
+        team.results = [];
 
-  teams.sort((a, b) => b.total - a.total);
+    });
 
-  displayTeams();
 
-  document.getElementById("teamName").value = "";
-  document.getElementById("placement").value = "";
-  document.getElementById("kills").value = "";
+    tournament.matches.forEach(match => {
+
+        match.results.forEach(result => {
+
+            const team =
+                tournament.teams.find(
+                    t =>
+                        t.id === result.teamId
+                );
+
+
+            if (!team) return;
+
+
+            team.totalPoints +=
+                result.total;
+
+            team.totalKills +=
+                result.kills;
+
+            team.placementPoints +=
+                result.placementPoints;
+
+            team.killPoints +=
+                result.killPoints;
+
+            team.matchesPlayed += 1;
+
+            team.results.push(result);
+
+        });
+
+    });
+
 }
 
-function displayTeams() {
 
-  const table = document.getElementById("tableBody");
+/* =========================================================
+   GET MATCH RESULT
+========================================================= */
 
-  table.innerHTML = "";
+function getMatchResult(
+    matchNumber,
+    teamId
+) {
 
-  teams.forEach((team, index) => {
+    const match =
+        tournament.matches.find(
+            m =>
+                m.number === matchNumber
+        );
 
-    table.innerHTML += `
-      <tr>
-        <td>${index + 1}</td>
-        <td>${team.name}</td>
-        <td>${team.placement}</td>
-        <td>${team.kills}</td>
-        <td>${team.placementPoints}</td>
-        <td>${team.killPoints}</td>
-        <td class="total">${team.total}</td>
-      </tr>
+
+    if (!match) return null;
+
+
+    return match.results.find(
+        r =>
+            r.teamId === teamId
+    ) || null;
+
+}
+
+
+/* =========================================================
+   STANDINGS
+========================================================= */
+
+function updateStandings() {
+
+    const body =
+        document.getElementById(
+            "standingsBody"
+        );
+
+
+    if (
+        tournament.teams.length === 0
+    ) {
+
+        body.innerHTML = `
+
+            <tr>
+                <td colspan="7">
+                    No teams yet.
+                </td>
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    const sorted =
+        [...tournament.teams]
+        .sort((a, b) => {
+
+            if (
+                b.totalPoints !==
+                a.totalPoints
+            ) {
+
+                return (
+                    b.totalPoints -
+                    a.totalPoints
+                );
+
+            }
+
+
+            if (
+                b.totalKills !==
+                a.totalKills
+            ) {
+
+                return (
+                    b.totalKills -
+                    a.totalKills
+                );
+
+            }
+
+
+            return (
+                a.slot -
+                b.slot
+            );
+
+        });
+
+
+    body.innerHTML = "";
+
+
+    sorted.forEach(
+        (team, index) => {
+
+            const rank =
+                index + 1;
+
+
+            let rankClass = "";
+
+            if (rank === 1)
+                rankClass = "rank-1";
+
+            if (rank === 2)
+                rankClass = "rank-2";
+
+            if (rank === 3)
+                rankClass = "rank-3";
+
+
+            body.innerHTML += `
+
+                <tr>
+
+                    <td class="${rankClass}">
+                        ${rank}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${escapeHtml(team.name)}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${team.matchesPlayed}
+                    </td>
+
+                    <td>
+                        ${team.totalKills}
+                    </td>
+
+                    <td>
+                        ${team.placementPoints}
+                    </td>
+
+                    <td>
+                        ${team.killPoints}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${team.totalPoints}
+                        </strong>
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+function updateSummary() {
+
+    document.getElementById(
+        "summary"
+    ).innerHTML = `
+
+        <div class="grid-3">
+
+            <div class="stat">
+
+                <div class="stat-title">
+                    Tournament
+                </div>
+
+                <div class="stat-value"
+                     style="font-size:18px;">
+                    ${escapeHtml(tournament.name)}
+                </div>
+
+            </div>
+
+            <div class="stat">
+
+                <div class="stat-title">
+                    Game
+                </div>
+
+                <div class="stat-value"
+                     style="font-size:18px;">
+                    ${escapeHtml(tournament.game)}
+                </div>
+
+            </div>
+
+            <div class="stat">
+
+                <div class="stat-title">
+                    Teams
+                </div>
+
+                <div class="stat-value">
+                    ${tournament.teams.length}
+                </div>
+
+            </div>
+
+        </div>
+
+        <br>
+
+        <span class="badge">
+            ${escapeHtml(tournament.format)}
+        </span>
+
+        <span class="badge">
+            ${tournament.matchCount} Matches
+        </span>
+
+        <span class="badge">
+            ${tournament.killPoints} Kill / Point
+        </span>
+
     `;
 
-  });
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function updateStats() {
+
+    document.getElementById(
+        "statTeams"
+    ).textContent =
+        tournament.teams.length;
+
+
+    document.getElementById(
+        "statMatches"
+    ).textContent =
+        tournament.matches.length;
+
+
+    const kills =
+        tournament.teams.reduce(
+            (sum, team) =>
+                sum + team.totalKills,
+            0
+        );
+
+
+    document.getElementById(
+        "statKills"
+    ).textContent =
+        kills;
 
 }
+
+
+/* =========================================================
+   PAGE NAVIGATION
+========================================================= */
+
+function showPage(
+    pageId,
+    button
+) {
+
+    document
+        .querySelectorAll(".page")
+        .forEach(page =>
+            page.classList.remove(
+                "active"
+            )
+        );
+
+
+    document
+        .querySelectorAll(".nav-btn")
+        .forEach(btn =>
+            btn.classList.remove(
+                "active"
+            )
+        );
+
+
+    document
+        .getElementById(pageId)
+        .classList.add("active");
+
+
+    button.classList.add("active");
+
+
+    if (pageId === "matches") {
+
+        updateMatchSelector();
+
+    }
+
+
+    if (pageId === "standings") {
+
+        updateStandings();
+        updateStats();
+
+    }
+
+}
+
+
+/* =========================================================
+   ALERT
+========================================================= */
+
+function showAlert(
+    elementId,
+    message,
+    type
+) {
+
+    const element =
+        document.getElementById(
+            elementId
+        );
+
+
+    element.textContent =
+        message;
+
+
+    element.className =
+        "alert show " +
+        (
+            type === "error"
+                ? "alert-error"
+                : "alert-success"
+        );
+
+
+    setTimeout(() => {
+
+        element.classList.remove(
+            "show"
+        );
+
+    }, 3500);
+
+}
+
+
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
+
+function saveData() {
+
+    localStorage.setItem(
+        "esportsTournament",
+        JSON.stringify(
+            tournament
+        )
+    );
+
+}
+
+
+/* =========================================================
+   LOAD DATA
+========================================================= */
+
+function loadData() {
+
+    const saved =
+        localStorage.getItem(
+            "esportsTournament"
+        );
+
+
+    if (!saved) {
+
+        tournament.placementPoints =
+            getDefaultPlacementPoints();
+
+        return;
+
+    }
+
+
+    try {
+
+        tournament =
+            JSON.parse(saved);
+
+    } catch {
+
+        tournament = {
+
+            name: "",
+            game: "Free Fire",
+            format: "Battle Royale",
+            matchCount: 6,
+            killPoints: 1,
+            placementPoints:
+                getDefaultPlacementPoints(),
+            teams: [],
+            matches: []
+
+        };
+
+    }
+
+
+    tournament.teams =
+        tournament.teams || [];
+
+    tournament.matches =
+        tournament.matches || [];
+
+    tournament.placementPoints =
+        tournament.placementPoints ||
+        getDefaultPlacementPoints();
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetTournament() {
+
+    if (
+        !confirm(
+            "Delete all tournament data from this browser?"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    localStorage.removeItem(
+        "esportsTournament"
+    );
+
+
+    location.reload();
+
+}
+
+
+/* =========================================================
+   EXPORT
+========================================================= */
+
+function exportData() {
+
+    const data =
+        JSON.stringify(
+            tournament,
+            null,
+            2
+        );
+
+
+    const blob =
+        new Blob(
+            [data],
+            {
+                type:
+                    "application/json"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const a =
+        document.createElement(
+            "a"
+        );
+
+
+    a.href = url;
+
+    a.download =
+        (
+            tournament.name ||
+            "tournament"
+        )
+        .replace(
+            /[^a-z0-9]/gi,
+            "_"
+        )
+        + ".json";
+
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(text) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+    div.textContent =
+        text;
+
+    return div.innerHTML;
+
+}
+
+
+/* =========================================================
+   MATCH NUMBER CHANGE
+========================================================= */
+
+document.addEventListener(
+    "change",
+    function(event) {
+
+        if (
+            event.target.id ===
+            "matchNumber"
+        ) {
+
+            renderMatchTable();
+
+        }
+
+        if (
+            event.target.id ===
+            "maxPlacement"
+        ) {
+
+            renderPlacementInputs();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+loadData();
+
+renderPlacementInputs();
+
+renderTeams();
+
+updateMatchSelector();
+
+updateStandings();
+
+updateStats();
 
 </script>
 
