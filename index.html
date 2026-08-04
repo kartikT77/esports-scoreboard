@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Esports Scoreboard</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+
+    input {
+      padding: 10px;
+      margin: 5px;
+      border-radius: 6px;
+      border: none;
+      width: 120px;
+    }
+
+    button {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #334155;
+    }
+
+    th {
+      background: #334155;
+    }
+
+    .total {
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>🏆 Esports Scoreboard</h1>
+
+  <div class="card">
+
+    <h2>Add Team Result</h2>
+
+    <input id="teamName" placeholder="Team name">
+    <input id="placement" type="number" placeholder="Placement">
+    <input id="kills" type="number" placeholder="Kills">
+
+    <button onclick="addTeam()">Add Result</button>
+
+  </div>
+
+  <div class="card">
+
+    <h2>Live Standings</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Team</th>
+          <th>Placement</th>
+          <th>Kills</th>
+          <th>Placement Pts</th>
+          <th>Kill Pts</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+
+      <tbody id="tableBody"></tbody>
+    </table>
+
+  </div>
+
+</div>
+
+<script>
+
+let teams = [];
+
+function getPlacementPoints(position) {
+
+  const points = {
+    1: 10,
+    2: 6,
+    3: 5,
+    4: 4,
+    5: 3,
+    6: 2,
+    7: 1
+  };
+
+  return points[position] || 0;
+}
+
+function addTeam() {
+
+  const name = document.getElementById("teamName").value;
+  const placement = Number(document.getElementById("placement").value);
+  const kills = Number(document.getElementById("kills").value);
+
+  if (!name || !placement || kills < 0) {
+    alert("Enter valid team details");
+    return;
+  }
+
+  const placementPoints = getPlacementPoints(placement);
+  const killPoints = kills;
+  const total = placementPoints + killPoints;
+
+  teams.push({
+    name,
+    placement,
+    kills,
+    placementPoints,
+    killPoints,
+    total
+  });
+
+  teams.sort((a, b) => b.total - a.total);
+
+  displayTeams();
+
+  document.getElementById("teamName").value = "";
+  document.getElementById("placement").value = "";
+  document.getElementById("kills").value = "";
+}
+
+function displayTeams() {
+
+  const table = document.getElementById("tableBody");
+
+  table.innerHTML = "";
+
+  teams.forEach((team, index) => {
+
+    table.innerHTML += `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${team.name}</td>
+        <td>${team.placement}</td>
+        <td>${team.kills}</td>
+        <td>${team.placementPoints}</td>
+        <td>${team.killPoints}</td>
+        <td class="total">${team.total}</td>
+      </tr>
+    `;
+
+  });
+
+}
+
+</script>
+
+</body>
+</html>
