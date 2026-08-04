@@ -1,64 +1,452 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Esports Scoreboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      margin: 0;
-      padding: 20px;
+<title>Esports Tournament Manager</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #080b12;
+    color: white;
+}
+
+header {
+    background: #111827;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #263044;
+}
+
+header h1 {
+    margin: 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+
+.card {
+    background: #111827;
+    border: 1px solid #263044;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    margin-bottom: 15px;
+    background: #0b1220;
+    color: white;
+    border: 1px solid #334155;
+    border-radius: 7px;
+}
+
+button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.hidden {
+    display: none;
+}
+
+.rules {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.team-row {
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.team-list {
+    margin-top: 15px;
+}
+
+.team {
+    background: #0b1220;
+    padding: 12px;
+    border-radius: 7px;
+    margin-bottom: 8px;
+}
+
+@media(max-width:600px) {
+
+    .rules {
+        grid-template-columns: 1fr;
     }
 
-    .container {
-      max-width: 900px;
-      margin: auto;
+    .team-row {
+        grid-template-columns: 1fr;
     }
 
-    h1 {
-      text-align: center;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h1>🏆 Esports Tournament Manager</h1>
+
+</header>
+
+
+<div class="container">
+
+
+<!-- TOURNAMENT SETUP -->
+
+<div class="card">
+
+<h2>1. Tournament Setup</h2>
+
+<label>Tournament Name</label>
+
+<input
+    id="tournamentName"
+    placeholder="Example: Karnataka Pro League"
+>
+
+
+<label>Game</label>
+
+<select id="game">
+
+<option>Free Fire</option>
+<option>BGMI</option>
+<option>PUBG Mobile</option>
+<option>COD Mobile</option>
+
+</select>
+
+
+<label>Number of Matches</label>
+
+<input
+    id="matchCount"
+    type="number"
+    value="6"
+    min="1"
+>
+
+
+</div>
+
+
+<!-- SCORING -->
+
+<div class="card">
+
+<h2>2. Scoring Rules</h2>
+
+<div class="rules">
+
+<div>
+
+<label>Points per Kill</label>
+
+<input
+    id="killPoints"
+    type="number"
+    value="1"
+    min="0"
+>
+
+</div>
+
+
+<div>
+
+<label>1st Place Points</label>
+
+<input
+    id="firstPlace"
+    type="number"
+    value="10"
+    min="0"
+>
+
+</div>
+
+</div>
+
+<p>
+More placement rules will be added next.
+</p>
+
+</div>
+
+
+<!-- TEAMS -->
+
+<div class="card">
+
+<h2>3. Add Teams</h2>
+
+<div class="team-row">
+
+<input
+    id="teamName"
+    placeholder="Team name"
+>
+
+<input
+    id="teamSlot"
+    type="number"
+    placeholder="Slot"
+>
+
+</div>
+
+<button onclick="addTeam()">
++ Add Team
+</button>
+
+<div id="teamList" class="team-list"></div>
+
+</div>
+
+
+<!-- CREATE -->
+
+<div class="card">
+
+<button onclick="createTournament()">
+Create Tournament
+</button>
+
+</div>
+
+
+<!-- TOURNAMENT RESULT -->
+
+<div id="tournamentCreated" class="card hidden">
+
+<h2>✅ Tournament Created</h2>
+
+<p id="summary"></p>
+
+<button onclick="startMatch()">
+Enter Match Results
+</button>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+let teams = [];
+
+let tournament = {};
+
+
+/* ADD TEAM */
+
+function addTeam() {
+
+    const name =
+        document.getElementById("teamName").value.trim();
+
+    const slot =
+        document.getElementById("teamSlot").value;
+
+
+    if (!name) {
+
+        alert("Enter a team name.");
+
+        return;
+
     }
 
-    .card {
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 12px;
-      margin-top: 20px;
+
+    teams.push({
+
+        name: name,
+
+        slot: slot || teams.length + 1,
+
+        matches: [],
+
+        totalPoints: 0,
+
+        totalKills: 0
+
+    });
+
+
+    document.getElementById("teamName").value = "";
+
+    document.getElementById("teamSlot").value = "";
+
+
+    displayTeams();
+
+}
+
+
+/* DISPLAY TEAMS */
+
+function displayTeams() {
+
+    const list =
+        document.getElementById("teamList");
+
+
+    list.innerHTML = "";
+
+
+    teams.forEach((team, index) => {
+
+        list.innerHTML += `
+
+            <div class="team">
+
+                <b>${team.slot}.</b>
+
+                ${team.name}
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+/* CREATE TOURNAMENT */
+
+function createTournament() {
+
+    const name =
+        document.getElementById("tournamentName").value.trim();
+
+    const game =
+        document.getElementById("game").value;
+
+    const matches =
+        Number(document.getElementById("matchCount").value);
+
+    const killPoints =
+        Number(document.getElementById("killPoints").value);
+
+    const firstPlace =
+        Number(document.getElementById("firstPlace").value);
+
+
+    if (!name) {
+
+        alert("Enter tournament name.");
+
+        return;
+
     }
 
-    input {
-      padding: 10px;
-      margin: 5px;
-      border-radius: 6px;
-      border: none;
-      width: 120px;
+
+    if (teams.length === 0) {
+
+        alert("Add at least one team.");
+
+        return;
+
     }
 
-    button {
-      padding: 10px 18px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-    }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
+    tournament = {
 
-    th, td {
-      padding: 12px;
-      text-align: center;
-      border-bottom: 1px solid #334155;
-    }
+        name: name,
 
-    th {
+        game: game,
+
+        matches: matches,
+
+        killPoints: killPoints,
+
+        firstPlace: firstPlace,
+
+        teams: teams
+
+    };
+
+
+    document.getElementById("summary").innerHTML = `
+
+        <b>${name}</b><br><br>
+
+        Game: ${game}<br>
+
+        Teams: ${teams.length}<br>
+
+        Matches: ${matches}<br>
+
+        Kill points: ${killPoints}<br>
+
+        1st place: ${firstPlace} points
+
+    `;
+
+
+    document
+        .getElementById("tournamentCreated")
+        .classList
+        .remove("hidden");
+
+}
+
+
+/* START MATCH */
+
+function startMatch() {
+
+    alert(
+        "Next module: Match Result Entry"
+    );
+
+}
+
+</script>
+
+</body>
+</html>    th {
       background: #334155;
     }
 
